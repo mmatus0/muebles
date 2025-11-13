@@ -2,8 +2,6 @@ package com.example.muebles.Controller;
 
 import com.example.muebles.Entity.*;
 import com.example.muebles.Services.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
