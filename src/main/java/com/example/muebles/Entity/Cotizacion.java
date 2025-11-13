@@ -1,12 +1,13 @@
 package com.example.muebles.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,5 +26,5 @@ public class Cotizacion {
     private String estadoCotizacion;
 
     @Column(name = "precio_final")
-    private BigDecimal precioFinal;
+    private Double precioFinal;
 }
