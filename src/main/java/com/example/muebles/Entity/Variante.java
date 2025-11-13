@@ -2,9 +2,6 @@ package com.example.muebles.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-
 import jakarta.persistence.*;
 
 @Data
@@ -23,7 +20,7 @@ public class Variante {
     private String nombreVariante;
     
     @Column(name = "precio_agregado")
-    private BigDecimal precioAgregado;
+    private Double precioAgregado;
 
     @Column(name = "descripcion_variante")
     private String descripcionVariante;

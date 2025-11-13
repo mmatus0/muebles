@@ -1,6 +1,4 @@
 package com.example.muebles.Entity;
-import java.math.BigDecimal;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +30,7 @@ public class Mueble {
     private String tipoMueble;
 
     @Column(name = "precio_base")
-    private BigDecimal precioBase;
+    private Double precioBase;
 
     @Column(name = "stock")
     private Integer stock;
