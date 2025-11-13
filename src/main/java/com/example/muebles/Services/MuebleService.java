@@ -1,7 +1,6 @@
 package com.example.muebles.Services;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.muebles.Entity.Mueble;
 import com.example.muebles.Repository.MuebleRepository;
@@ -9,7 +8,6 @@ import com.example.muebles.Repository.MuebleRepository;
 @Service
 public class MuebleService {
 
-    @Autowired
     private MuebleRepository muebleRepository;
 
     public MuebleService(MuebleRepository muebleRepository){

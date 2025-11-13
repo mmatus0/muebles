@@ -19,15 +19,15 @@ public class DetalleCotizacion {
     private Integer idDetalleCoti;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cotizacion_id", nullable = false)
+    @JoinColumn(name = "cotizacion_id")
     private Cotizacion cotizacion;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "variante_id", nullable = false)
+    @JoinColumn(name = "variante_id")
     private Variante variante;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mueble_id", nullable = false)
+    @JoinColumn(name = "mueble_id")
     private Mueble mueble;
 
     @Column(name = "cantidad")

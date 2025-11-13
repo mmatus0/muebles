@@ -42,11 +42,10 @@ public class CotizacionService {
     @Transactional
     public Cotizacion crearCotizacion() {
         Cotizacion cotizacion = Cotizacion.builder()
-            .setFechaCotizacion(LocalDate.now())
-            .setEstadoCotizacion("PENDIENTE")
-            .setPrecioFinal(0.0)
-            .build();
-        
+        .fechaCotizacion(LocalDate.now())
+        .estadoCotizacion("PENDIENTE")
+        .precioFinal(0.0)
+        .build();
         return cotizacionRepository.save(cotizacion);
     }
 
@@ -97,6 +96,31 @@ public class CotizacionService {
         double precioTotal = detalles.stream().mapToDouble(DetalleCotizacion::getSubtotal).sum();
         cotizacion.setPrecioFinal(precioTotal);
         cotizacionRepository.save(cotizacion);
+    }
+
+    @Transactional
+    public void cancelarCotizacion(Integer idCotizacion) throws Exception {
+        Cotizacion cotizacion = listarCotizacion(idCotizacion);
+        
+        if (!cotizacion.getEstadoCotizacion().equals("PENDIENTE")) {
+            throw new Exception("Solo se pueden cancelar cotizaciones pendientes");
+        }
+        
+        cotizacion.setEstadoCotizacion("CANCELADA");
+        cotizacionRepository.save(cotizacion);
+    }
+
+    @Transactional
+    public void eliminarDetalle(Integer idDetalle) throws Exception {
+        DetalleCotizacion detalle = detalleCotizacionRepository.findById(idDetalle)
+            .orElseThrow(() -> new Exception("Detalle no encontrado"));
+        
+        Integer idCotizacion = detalle.getCotizacion().getIdCotizacion();
+        
+        detalleCotizacionRepository.delete(detalle);
+        
+        // Actualizar precio final
+        actualizarPrecioFinal(idCotizacion);
     }
 
     //OPERACIONES DEL TIPO CRUD

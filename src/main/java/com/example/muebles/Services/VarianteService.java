@@ -2,14 +2,12 @@ package com.example.muebles.Services;
 
 import com.example.muebles.Entity.Variante;
 import com.example.muebles.Repository.VarianteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class VarianteService {
     
-    @Autowired
     private VarianteRepository varianteRepository;
 
     public VarianteService(VarianteRepository varianteRepository){
