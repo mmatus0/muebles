@@ -43,4 +43,7 @@ public class Mueble {
     @Column(name = "tamanio_mueble")
     private String tamanioMueble;
 
+    @Column(name = "material_mueble")
+    private String materialMueble;
+
 }
