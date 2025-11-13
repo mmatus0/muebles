@@ -1,5 +1,6 @@
 package com.example.muebles.Services.Strategy;
+import com.example.muebles.Entity.*;
 
-public class PrecioStrategy {
-    
+public interface PrecioStrategy {
+    double calcularPrecio(Mueble mueble, Variante variante);
 }
