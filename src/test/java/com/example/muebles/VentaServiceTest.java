@@ -49,7 +49,7 @@ public class VentaServiceTest {
     }
     
     @Test
-    void testNoPermitirVentaConStockCero() {
+    void testVentaConStockCero() {
         Mueble mueble = new Mueble();
         mueble.setNombreMueble("Estante agotado");
         mueble.setStock(0);
@@ -60,7 +60,7 @@ public class VentaServiceTest {
     }
     
     @Test
-    void testValidarEstadoCotizacionParaVenta() {
+    void testValidarEstadoCotizacionVenta() {
         Cotizacion cotizacion = new Cotizacion();
         cotizacion.setEstadoCotizacion("PENDIENTE");
         
@@ -69,7 +69,7 @@ public class VentaServiceTest {
     }
     
     @Test
-    void testNoPermitirVentaDeCotizacionYaConfirmada() {
+    void testVentaDeCotizacionYaConfirmada() {
         Cotizacion cotizacion = new Cotizacion();
         cotizacion.setEstadoCotizacion("CONFIRMADA");
     
@@ -78,7 +78,7 @@ public class VentaServiceTest {
     }
     
     @Test
-    void testStockNegativoNoDebeSerPosible() {
+    void testStockNegativo() {
         Mueble mueble = new Mueble();
         mueble.setStock(5);
 

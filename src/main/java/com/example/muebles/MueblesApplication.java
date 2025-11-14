@@ -8,6 +8,7 @@ public class MueblesApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MueblesApplication.class, args);
+		System.out.println("Hello!");
 	}
 
 }
