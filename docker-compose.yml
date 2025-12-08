@@ -1,0 +1,51 @@
+services:
+  # BDD
+  mysqldb:
+    image: mysql:8.0
+    container_name: muebles_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+      MYSQL_DATABASE: muebleshermanos
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Docker para backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: muebles_backend
+    restart: always
+    ports:
+      - "1544:1544"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/muebleshermanos
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASS}
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+
+  # Docker para frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: muebles_frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
