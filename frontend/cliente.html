@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente - Muebles Hermanos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">Muebles Hermanos S.A.</a>
+            <h1>Tienda de Muebles</h1>
+        </div>
+    </header>
+
+    <main class="cliente-layout">
+        <section class="catalogo-section">
+            <h2>Catálogo de Muebles</h2>
+            
+            <div class="filtros">
+                <label>
+                    Tipo:
+                    <select id="filtro-tipo" onchange="filtrarCatalogo()">
+                        <option value="">Todos</option>
+                        <option value="Silla">Silla</option>
+                        <option value="Sillon">Sillón</option>
+                        <option value="Mesa">Mesa</option>
+                        <option value="Estante">Estante</option>
+                        <option value="Cajon">Cajón</option>
+                    </select>
+                </label>
+                <label>
+                    Tamaño:
+                    <select id="filtro-tamanio" onchange="filtrarCatalogo()">
+                        <option value="">Todos</option>
+                        <option value="Grande">Grande</option>
+                        <option value="Mediano">Mediano</option>
+                        <option value="Pequeno">Pequeño</option>
+                    </select>
+                </label>
+            </div>
+
+            <div id="catalogo-cliente"></div>
+        </section>
+
+        <aside class="cotizacion-section">
+            <h2>Mi Cotización</h2>
+            
+            <div id="cotizacion-estado">
+                <p>No hay cotización activa</p>
+                <button onclick="crearNuevaCotizacion()" class="btn-primary">Nueva Cotización</button>
+            </div>
+
+            <div id="cotizacion-activa" style="display:none;">
+                <div class="cotizacion-info">
+                    <span id="cotizacion-numero"></span>
+                    <span id="cotizacion-status" class="status-badge"></span>
+                </div>
+
+                <div id="lista-detalles"></div>
+
+                <div class="cotizacion-total">
+                    <span>Total:</span>
+                    <span id="cotizacion-total">$0</span>
+                </div>
+
+                <div class="cotizacion-acciones">
+                    <button onclick="confirmarVenta()" class="btn-confirmar">Confirmar Compra</button>
+                    <button onclick="cancelarCotizacion()" class="btn-cancelar">Cancelar</button>
+                </div>
+            </div>
+
+            <div id="agregar-producto" style="display:none;">
+                <h3>Agregar Producto</h3>
+                <form id="form-agregar" onsubmit="agregarDetalle(event)">
+                    <label>
+                        Mueble:
+                        <select id="select-mueble" required></select>
+                    </label>
+                    <label>
+                        Variante:
+                        <select id="select-variante">
+                            <option value="">Normal (sin variante)</option>
+                        </select>
+                    </label>
+                    <label>
+                        Cantidad:
+                        <input type="number" id="input-cantidad" min="1" value="1" required>
+                    </label>
+                    <button type="submit" class="btn-primary">Agregar</button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <div id="mensaje" class="mensaje"></div>
+
+    <script src="cliente.js"></script>
+</body>
+</html>

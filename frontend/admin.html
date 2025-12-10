@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador - Muebles Hermanos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">Muebles Hermanos S.A.</a>
+            <h1>Panel de Administración</h1>
+            <span class="admin-badge">Gustavo</span>
+        </div>
+    </header>
+
+    <main class="admin-layout">
+        <nav class="admin-sidebar">
+            <button onclick="mostrarSeccion('sec-muebles')" class="sidebar-btn active" data-section="sec-muebles">Muebles</button>
+            <button onclick="mostrarSeccion('sec-variantes')" class="sidebar-btn" data-section="sec-variantes">Variantes</button>
+            <button onclick="mostrarSeccion('sec-cotizaciones')" class="sidebar-btn" data-section="sec-cotizaciones">Cotizaciones</button>
+            <button onclick="mostrarSeccion('sec-ventas')" class="sidebar-btn" data-section="sec-ventas">Ventas</button>
+        </nav>
+
+        <div class="admin-content">
+            <section id="sec-muebles" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestión de Muebles</h2>
+                    <button onclick="mostrarFormMueble()" class="btn-primary">+ Nuevo Mueble</button>
+                </div>
+
+                <div id="form-mueble-container" class="form-container" style="display:none;">
+                    <h3 id="titulo-form-mueble">Nuevo Mueble</h3>
+                    <form id="form-mueble" onsubmit="guardarMueble(event)">
+                        <input type="hidden" id="mueble-id">
+                        <div class="form-grid">
+                            <label>
+                                Nombre:
+                                <input type="text" id="mueble-nombre" required>
+                            </label>
+                            <label>
+                                Tipo:
+                                <select id="mueble-tipo" required>
+                                    <option value="Silla">Silla</option>
+                                    <option value="Sillon">Sillón</option>
+                                    <option value="Mesa">Mesa</option>
+                                    <option value="Estante">Estante</option>
+                                    <option value="Cajon">Cajón</option>
+                                </select>
+                            </label>
+                            <label>
+                                Precio Base:
+                                <input type="number" id="mueble-precio" step="0.01" min="0" required>
+                            </label>
+                            <label>
+                                Stock:
+                                <input type="number" id="mueble-stock" min="0" required>
+                            </label>
+                            <label>
+                                Estado:
+                                <select id="mueble-estado" required>
+                                    <option value="Activo">Activo</option>
+                                    <option value="Inactivo">Inactivo</option>
+                                </select>
+                            </label>
+                            <label>
+                                Tamaño:
+                                <select id="mueble-tamanio" required>
+                                    <option value="Grande">Grande</option>
+                                    <option value="Mediano">Mediano</option>
+                                    <option value="Pequeno">Pequeño</option>
+                                </select>
+                            </label>
+                            <label class="full-width">
+                                Material:
+                                <input type="text" id="mueble-material" required>
+                            </label>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-primary">Guardar</button>
+                            <button type="button" onclick="cancelarFormMueble()" class="btn-secondary">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table id="tabla-muebles">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado</th>
+                            <th>Tamaño</th>
+                            <th>Material</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <section id="sec-variantes" class="admin-section" style="display:none;">
+                <div class="section-header">
+                    <h2>Gestión de Variantes</h2>
+                    <button onclick="mostrarFormVariante()" class="btn-primary">+ Nueva Variante</button>
+                </div>
+
+                <div id="form-variante-container" class="form-container" style="display:none;">
+                    <h3 id="titulo-form-variante">Nueva Variante</h3>
+                    <form id="form-variante" onsubmit="guardarVariante(event)">
+                        <input type="hidden" id="variante-id">
+                        <div class="form-grid">
+                            <label>
+                                Nombre:
+                                <input type="text" id="variante-nombre" required>
+                            </label>
+                            <label>
+                                Precio Agregado:
+                                <input type="number" id="variante-precio" step="0.01" min="0" required>
+                            </label>
+                            <label class="full-width">
+                                Descripción:
+                                <textarea id="variante-descripcion" rows="3"></textarea>
+                            </label>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-primary">Guardar</button>
+                            <button type="button" onclick="cancelarFormVariante()" class="btn-secondary">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table id="tabla-variantes">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio Agregado</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <section id="sec-cotizaciones" class="admin-section" style="display:none;">
+                <div class="section-header">
+                    <h2>Cotizaciones</h2>
+                    <button onclick="cargarCotizaciones()" class="btn-secondary">Actualizar</button>
+                </div>
+
+                <table id="tabla-cotizaciones">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Precio Final</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+                <div id="modal-detalle-cotizacion" class="modal" style="display:none;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Detalle de Cotización <span id="modal-cotizacion-id"></span></h3>
+                            <button onclick="cerrarModalDetalle()" class="btn-cerrar">&times;</button>
+                        </div>
+                        <div id="modal-detalle-contenido"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sec-ventas" class="admin-section" style="display:none;">
+                <div class="section-header">
+                    <h2>Ventas Confirmadas</h2>
+                    <button onclick="cargarVentas()" class="btn-secondary">Actualizar</button>
+                </div>
+
+                <div id="estadisticas-ventas" class="stats-container"></div>
+
+                <table id="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <div id="mensaje" class="mensaje"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
