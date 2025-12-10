@@ -1,5 +1,4 @@
 services:
-  # Docker de BDD
   mysqldb:
     image: mysql:8.0
     container_name: muebles_mysql
@@ -12,13 +11,14 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - muebles_net
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Apartado de backend de docker
   backend:
     build:
       context: .
@@ -28,14 +28,15 @@ services:
     ports:
       - "8081:1544"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/muebleshermanos
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/muebleshermanos?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-root}
       SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASS:-root123}
     depends_on:
       mysqldb:
         condition: service_healthy
+    networks:
+      - muebles_net
 
-  # Apartado de Frontend de docker
   frontend:
     build:
       context: ./frontend
@@ -46,6 +47,12 @@ services:
       - "3000:80"
     depends_on:
       - backend
+    networks:
+      - muebles_net
+
+networks:
+  muebles_net:
+    driver: bridge
 
 volumes:
   mysql_data:
