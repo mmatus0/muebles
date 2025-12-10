@@ -1,11 +1,11 @@
 services:
-  # BDD
+  # Docker de BDD
   mysqldb:
     image: mysql:8.0
     container_name: muebles_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASS:-root123}
       MYSQL_DATABASE: muebleshermanos
     ports:
       - "3307:3306"
@@ -18,24 +18,24 @@ services:
       timeout: 5s
       retries: 5
 
-  # Docker para backend
+  # Apartado de backend de docker
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: muebles_backend
     restart: always
     ports:
-      - "1544:1544"
+      - "8081:1544"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/muebleshermanos
-      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
-      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASS}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-root}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASS:-root123}
     depends_on:
       mysqldb:
         condition: service_healthy
 
-  # Docker para frontend
+  # Apartado de Frontend de docker
   frontend:
     build:
       context: ./frontend
@@ -43,7 +43,7 @@ services:
     container_name: muebles_frontend
     restart: always
     ports:
-      - "80:80"
+      - "3000:80"
     depends_on:
       - backend
 

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mueblería Los Muebles Hermanos S.A.</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1> Plataforma - Muebles Hermanos S.A.</h1>
+        <nav>
+            <button onclick="mostrarVista('cliente')" class="nav-btn" id="btn-cliente">Cliente</button>
+            <button onclick="mostrarVista('admin')" class="nav-btn" id="btn-admin">Gustavo (Admin)</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ==================== VISTA DEL CLIENTE ==================== -->
+        <div id="vista-cliente" class="vista">
+            <h2>Catálogo de Muebles</h2>
+            
+            <div id="catalogo-cliente"></div>
+
+            <hr>
+            <h2>Mi Cotización</h2>
+            <div id="cotizacion-actual">
+                <p>No hay cotización activa. <button onclick="crearNuevaCotizacion()">Crear Nueva Cotización</button></p>
+            </div>
+
+            <div id="detalles-cotizacion"></div>
+
+            <div id="acciones-cotizacion" style="display:none;">
+                <h3>Agregar Producto a Cotización</h3>
+                <form id="form-agregar-detalle" onsubmit="agregarDetalle(event)">
+                    <label>Mueble:
+                        <select id="select-mueble" required></select>
+                    </label>
+                    <label>Variante (opcional):
+                        <select id="select-variante">
+                            <option value="">Normal (sin variante)</option>
+                        </select>
+                    </label>
+                    <label>Cantidad:
+                        <input type="number" id="input-cantidad" min="1" value="1" required>
+                    </label>
+                    <button type="submit">Agregar</button>
+                </form>
+
+                <div class="botones-cotizacion">
+                    <button onclick="confirmarVenta()" class="btn-confirmar">Confirmar como Venta</button>
+                    <button onclick="cancelarCotizacion()" class="btn-cancelar">Cancelar Cotización</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VISTA DEL ADMIN  ==================== -->
+        <div id="vista-admin" class="vista" style="display:none;">
+            <div class="admin-tabs">
+                <button onclick="mostrarSeccion('sec-muebles')" class="tab-btn active">Muebles</button>
+                <button onclick="mostrarSeccion('sec-variantes')" class="tab-btn">Variantes</button>
+                <button onclick="mostrarSeccion('sec-cotizaciones')" class="tab-btn">Cotizaciones</button>
+                <button onclick="mostrarSeccion('sec-ventas')" class="tab-btn">Ventas</button>
+            </div>
+
+            <!-- Sección Muebles -->
+            <section id="sec-muebles" class="admin-section">
+                <h2>Gestión de Muebles</h2>
+                <button onclick="mostrarFormMueble()">+ Nuevo Mueble</button>
+                
+                <div id="form-mueble-container" style="display:none;">
+                    <h3 id="titulo-form-mueble">Nuevo Mueble</h3>
+                    <form id="form-mueble" onsubmit="guardarMueble(event)">
+                        <input type="hidden" id="mueble-id">
+                        <label>Nombre: <input type="text" id="mueble-nombre" required></label>
+                        <label>Tipo:
+                            <select id="mueble-tipo" required>
+                                <option value="Silla">Silla</option>
+                                <option value="Sillon">Sillón</option>
+                                <option value="Mesa">Mesa</option>
+                                <option value="Estante">Estante</option>
+                                <option value="Cajon">Cajón</option>
+                            </select>
+                        </label>
+                        <label>Precio Base: <input type="number" id="mueble-precio" step="0.01" required></label>
+                        <label>Stock: <input type="number" id="mueble-stock" min="0" required></label>
+                        <label>Estado:
+                            <select id="mueble-estado" required>
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                        </label>
+                        <label>Tamaño:
+                            <select id="mueble-tamanio" required>
+                                <option value="Grande">Grande</option>
+                                <option value="Mediano">Mediano</option>
+                                <option value="Pequeno">Pequeño</option>
+                            </select>
+                        </label>
+                        <label>Material: <input type="text" id="mueble-material" required></label>
+                        <div class="form-buttons">
+                            <button type="submit">Guardar</button>
+                            <button type="button" onclick="cancelarFormMueble()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table id="tabla-muebles">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado</th>
+                            <th>Tamaño</th>
+                            <th>Material</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- Variantes -->
+            <section id="sec-variantes" class="admin-section" style="display:none;">
+                <h2>Gestión de Variantes</h2>
+                <button onclick="mostrarFormVariante()">+ Nueva Variante</button>
+                
+                <div id="form-variante-container" style="display:none;">
+                    <h3 id="titulo-form-variante">Nueva Variante</h3>
+                    <form id="form-variante" onsubmit="guardarVariante(event)">
+                        <input type="hidden" id="variante-id">
+                        <label>Nombre: <input type="text" id="variante-nombre" required></label>
+                        <label>Precio Agregado: <input type="number" id="variante-precio" step="0.01" required></label>
+                        <label>Descripción: <textarea id="variante-descripcion"></textarea></label>
+                        <div class="form-buttons">
+                            <button type="submit">Guardar</button>
+                            <button type="button" onclick="cancelarFormVariante()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <table id="tabla-variantes">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio Agregado</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- Cotizaciones -->
+            <section id="sec-cotizaciones" class="admin-section" style="display:none;">
+                <h2>Cotizaciones</h2>
+                <button onclick="cargarCotizaciones()">Actualizar</button>
+                <table id="tabla-cotizaciones">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Precio Final</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <!-- Ventas -->
+            <section id="sec-ventas" class="admin-section" style="display:none;">
+                <h2>Ventas Confirmadas</h2>
+                <div id="estadisticas-ventas"></div>
+                <button onclick="cargarVentas()">Actualizar</button>
+                <table id="tabla-ventas">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+        </div>
+    </main>
+
+    <div id="mensaje" class="mensaje"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
